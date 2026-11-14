@@ -1,0 +1,12 @@
+Dubhashi
+Copyright 2026 Udgam Labs LLP
+
+The code in this repository and the model weights it downloads are licensed under the Apache License, Version 2.0
+(see LICENSE). The models were trained from random initialisation by Udgam Labs; no third-party model weights are
+included.
+
+Their training targets were written by IndicTrans2 dist-200M (AI4Bharat, MIT licence):
+https://github.com/AI4Bharat/IndicTrans2 (Gala et al., TMLR 2023, arXiv:2305.16307)
+
+The English source sentences come from IndicCorp v2 (AI4Bharat, CC0 1.0):
+https://huggingface.co/datasets/ai4bharat/IndicCorpV2

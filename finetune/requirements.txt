@@ -1,0 +1,6 @@
+transformers>=4.50,<6
+datasets
+sentencepiece
+torch
+accelerate
+ctranslate2>=4.5
