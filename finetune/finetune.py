@@ -29,7 +29,7 @@ def read_pairs(path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--lang", required=True, choices=["gu", "pa", "as", "or"])
+    ap.add_argument("--lang", required=True, choices=["hi", "bn", "mr", "te", "ta", "gu", "ur", "kn", "ml", "pa", "or", "as"])
     ap.add_argument("--train", required=True)
     ap.add_argument("--dev")
     ap.add_argument("--out", required=True)
@@ -73,12 +73,22 @@ def main():
 
 
 def to_ct2(path):
-    """CTranslate2's Marian converter drops the last vocabulary row, assuming it is <pad>. These models keep <pad> at
-    id 2, so nothing must be dropped."""
+    """CTranslate2's Marian converter assumes the original Marian layout: <pad> is the last vocabulary row and the
+    decoder starts from an all-zero embedding. These models keep <pad> at id 2 and start the decoder from its learned
+    row, so nothing is dropped and the decoder starts from <pad> itself. Without the second fix the int8 build drifts
+    from the fp32 model (for one language it lost 2 chrF++)."""
     import ctranslate2
     from ctranslate2.converters import transformers as ct2t
 
     ct2t.MarianMTLoader._remove_pad_weights = lambda self, spec: None
+    ct2t.MarianMTLoader.set_decoder = lambda self, spec, dec: ct2t.BartLoader.set_decoder(self, spec, dec)
+    set_config = ct2t.MarianMTLoader.set_config
+
+    def _set_config(self, config, model, tokenizer):
+        set_config(self, config, model, tokenizer)
+        config.decoder_start_token = tokenizer.pad_token
+
+    ct2t.MarianMTLoader.set_config = _set_config
     ctranslate2.converters.TransformersConverter(path).convert(str(Path(path) / "ct2-int8"), quantization="int8",
                                                                force=True)
     import shutil

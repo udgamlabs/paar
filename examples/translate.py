@@ -1,4 +1,4 @@
-"""Translate English into Gujarati, Punjabi, Assamese or Odia from the command line, offline after the first run.
+"""Translate English into one of twelve languages from the command line, offline after the first run.
 
     pip install ctranslate2 sentencepiece huggingface_hub
     python translate.py gu "The train leaves at 6:45 tomorrow morning."
@@ -38,7 +38,8 @@ def translate(sp, tr, text):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2 or sys.argv[1] not in ("gu", "pa", "as", "or"):
-        sys.exit("usage: translate.py gu|pa|as|or [English text]   (reads stdin when no text is given)")
+    LANGS = ("hi", "bn", "mr", "te", "ta", "gu", "ur", "kn", "ml", "pa", "or", "as")
+    if len(sys.argv) < 2 or sys.argv[1] not in LANGS:
+        sys.exit("usage: translate.py " + "|".join(LANGS) + " [English text]   (reads stdin when no text is given)")
     sp, tr = load(sys.argv[1])
     print(translate(sp, tr, " ".join(sys.argv[2:]) or sys.stdin.read()))
