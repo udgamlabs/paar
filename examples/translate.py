@@ -14,7 +14,7 @@ import ctranslate2
 import sentencepiece as spm
 from huggingface_hub import snapshot_download
 
-REPO = "udgamlabs/mt-draft-en-{lang}"
+REPO = "udgamlabs/Paar-en-{lang}"
 SPLIT = re.compile(r"(?<=[.!?])\s+")
 
 

@@ -18,7 +18,7 @@ from datasets import Dataset
 from transformers import (DataCollatorForSeq2Seq, MarianMTModel, MarianTokenizer, Seq2SeqTrainer,
                           Seq2SeqTrainingArguments)
 
-REPO = "udgamlabs/mt-draft-en-{lang}"
+REPO = "udgamlabs/Paar-en-{lang}"
 
 
 def read_pairs(path):
